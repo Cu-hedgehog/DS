@@ -1,0 +1,12 @@
+fruit,shop,pl,Q,P,total
+lemons,Shop A,online,1,5,5
+lemons,Shop A,online,2,4,8
+lemons,Shop A,offline,2,5,10
+lemons,Shop B,online,3,5,15
+apples,Shop A,online,3,6,18
+apples,Shop A,offline,4,6,24
+apples,Shop A,offline,5,8,40
+apples,Shop B,online,6,9,54
+apples,Shop B,offline,7,9,63
+apples,Shop B,offline,4,3,12
+apples,Shop A,offline,4,3,12
