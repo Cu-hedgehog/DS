@@ -1,3 +1,7 @@
 ExchangeRates.csv
+<<<<<<< HEAD
 hh_database.csv
 
+=======
+hh_database.csv
+>>>>>>> e166f29 (change gitignore)
