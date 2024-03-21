@@ -19,12 +19,9 @@ def entropy(y):
     EPS = 0.0005
 
     # YOUR CODE HERE
-    p = y.sum(axis=0) / y.sum()
-    print(p)
+    prob = np.mean(y, axis=0)
     
-    return -(p * np.log(p + EPS)).sum()
-    
-    return -np.sum(y * np.log(y))
+    return -np.sum(prob * np.log(prob + EPS))
     
 def gini(y):
     """
@@ -42,8 +39,10 @@ def gini(y):
     """
 
     # YOUR CODE HERE
+    prob = np.mean(y, axis=0)
     
-    return 1 - np.sum(y**2)
+    
+    return 1 - np.sum(prob**2)
     
 def variance(y):
     """
@@ -62,7 +61,7 @@ def variance(y):
     
     # YOUR CODE HERE
     
-    return 0.
+    return np.var(y)
 
 def mad_median(y):
     """
@@ -82,7 +81,7 @@ def mad_median(y):
 
     # YOUR CODE HERE
     
-    return 0.
+    return np.mean(np.abs(y - np.median(y)))
 
 
 def one_hot_encode(n_classes, y):
@@ -159,6 +158,10 @@ class DecisionTree(BaseEstimator):
         """
 
         # YOUR CODE HERE
+        lower_bound = X_subset[:, feature_index] < threshold
+        upper_bound = X_subset[:, feature_index] >= threshold
+        X_left, y_left= X_subset[lower_bound],y_subset[lower_bound]
+        X_right, y_right= X_subset[upper_bound],y_subset[upper_bound]
         
         return (X_left, y_left), (X_right, y_right)
     
@@ -193,6 +196,7 @@ class DecisionTree(BaseEstimator):
         """
 
         # YOUR CODE HERE
+        y_left, y_right = y_subset[X_subset[:, feature_index] < threshold], y_subset[X_subset[:, feature_index] >= threshold]
         
         return y_left, y_right
 
@@ -219,9 +223,24 @@ class DecisionTree(BaseEstimator):
 
         """
         # YOUR CODE HERE
+        best_value = np.inf
+        feature_index = 0
+        threshold = 0
+        n_objects, n_features = X_subset.shape
+
+        for i in range(n_features):
+          thresholds = np.sort(np.unique(X_subset[:, i]))
+          for j in thresholds:
+            y_left, y_right = self.make_split_only_y(i, j, X_subset, y_subset)
+            temp =  (len(y_left) * self.criterion(y_left) + len(y_right) * self.criterion(y_right)) / n_objects
+            if temp < best_value:
+              threshold = j
+              feature_index = i
+              best_value = temp
+
         return feature_index, threshold
     
-    def make_tree(self, X_subset, y_subset):
+    def make_tree(self, X_subset, y_subset, depth=0):
         """
         Recursively builds the tree
         
@@ -241,7 +260,30 @@ class DecisionTree(BaseEstimator):
         """
 
         # YOUR CODE HERE
+        y_same = np.zeros_like(y_subset)
+        y_same[:, 0] = 1
+        eps = 1e-5
+
+        if depth >= self.max_depth or len(y_subset) <= self.min_samples_split or \
+           self.criterion(y_subset) < self.criterion(y_same) + eps:
+            prediction = 0
+            if self.classification:
+                prediction = np.argmax(np.sum(y_subset, axis=0))
+                proba = np.sum(y_subset, axis=0) / len(y_subset)
+                return Node(0, prediction, proba)
+            else:
+                if self.criterion_name == 'variance':
+                    prediction = np.mean(y_subset)
+                else:
+                    prediction = np.median(y_subset)
+                return Node(0, prediction)
         
+        feature_index, threshold = self.choose_best_split(X_subset, y_subset)
+        new_node = Node(feature_index, threshold)
+        left_subsets, right_subsets = self.make_split(feature_index, threshold, X_subset, y_subset)
+        new_node.left_child = self.make_tree(*left_subsets, depth + 1)
+        new_node.right_child = self.make_tree(*right_subsets, depth + 1)
+               
         return new_node
         
     def fit(self, X, y):
@@ -266,8 +308,9 @@ class DecisionTree(BaseEstimator):
             y = one_hot_encode(self.n_classes, y)
 
         self.root = self.make_tree(X, y)
-    
-    def predict(self, X):
+        
+   
+    def predict(self, X, current_node=None):
         """
         Predict the target value or class label  the model from scratch using the provided data
         
@@ -286,9 +329,23 @@ class DecisionTree(BaseEstimator):
 
         # YOUR CODE HERE
         
+        if current_node is None:
+            current_node = self.root
+        if current_node.left_child is None:
+            return np.full((len(X), 1), current_node.value)
+        left_indices, = np.nonzero(X[:, current_node.feature_index] < current_node.value)
+        right_indices, = np.nonzero(X[:, current_node.feature_index] >= current_node.value)
+        y_predicted = np.zeros((len(X), 1))
+        if left_indices.size != 0:
+            left_predictions = self.predict(X[left_indices], current_node.left_child)
+            y_predicted[left_indices] = left_predictions
+        if right_indices.size != 0:
+            right_predictions = self.predict(X[right_indices], current_node.right_child)
+            y_predicted[right_indices] = right_predictions
+            
         return y_predicted
         
-    def predict_proba(self, X):
+    def predict_proba(self, X, current_node=None):
         """
         Only for classification
         Predict the class probabilities using the provided data
@@ -304,8 +361,22 @@ class DecisionTree(BaseEstimator):
             Probabilities of each class for the provided objects
         
         """
-        assert self.classification, 'Available only for classification problem'
+        
+        self.classification, 'Available only for classification problem'
 
         # YOUR CODE HERE
+        if current_node is None:
+            current_node = self.root
+        if current_node.left_child is None:
+            return np.tile(current_node.proba, (len(X), 1))
+        left_indices, = np.nonzero(X[:, current_node.feature_index] < current_node.value)
+        right_indices, = np.nonzero(X[:, current_node.feature_index] >= current_node.value)
+        y_predicted_probs = np.zeros((len(X), self.n_classes))
+        if left_indices.size != 0:
+            left_predictions = self.predict_proba(X[left_indices], current_node.left_child)
+            y_predicted_probs[left_indices] = left_predictions
+        if right_indices.size != 0:
+            right_predictions = self.predict_proba(X[right_indices], current_node.right_child)
+            y_predicted_probs[right_indices] = right_predictions
         
         return y_predicted_probs
