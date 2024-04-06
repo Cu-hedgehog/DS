@@ -1,0 +1,212 @@
+.header{
+    display: block;
+    width: 98%;
+    height: 4em;
+    font-size: 1.1em;
+    background-color: #666666;
+    margin: 0;
+    margin-bottom: 2em;
+    padding: 10px;
+    color: #FFF;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.button{
+    display: inline-block !important;
+    border: none !important;
+    width: 120px;
+    height: 60px !important;
+    font-size: 0.8em !important;
+    background-color: #555555 !important;
+    margin-top: 8px !important;
+    padding: 10px !important;
+    margin-right: 20px !important;
+    color: #FFF !important;
+    border-radius: 5px !important;
+}
+
+.button:hover{
+    display: inline-block !important;
+    border: none !important;
+    width: 120px;
+    height: 60px !important;
+    font-size: 0.8em !important;
+    background-color: #444444 !important;
+    margin-top: 8px !important;
+    margin-right: 20px !important;
+    color: #FFF !important;
+    padding: 10px !important;
+}
+.clicked{
+    display: inline-block !important;
+    border: none !important;
+    width: 120px;
+    height: 60px;
+    font-size: 0.8em !important;
+    background-color: #888 !important;
+    margin-top: 8px !important;
+    margin-right: 20px !important;
+    color: #FFF !important;
+    border-radius: 5px !important;
+}
+.sendButton{
+    display: block !important;
+    border: none !important;
+    width: 120px;
+    height: 40px;
+    font-size: 0.8em;
+    background-color: #666 !important;
+    margin-top: 8px !important;
+    margin-right: 20px !important;
+    color: #CCC !important;
+}
+
+.sendButton:disabled{
+    display: block !important;
+    border: none !important;
+    width: 120px;
+    height: 40px;
+    font-size: 0.8em;
+    background-color: #AAA !important;
+    margin-top: 8px !important;
+    margin-right: 20px !important;
+    color: #CCC !important;
+}
+
+.sendButton:hover{
+    display: block !important;
+    border: none;
+    width: 120px;
+    height: 40px;
+    font-size: 0.8em;
+    background-color: #555 !important;
+    margin-top: 8px;
+    margin-right: 20px !important;
+}
+
+.window{
+    display: grid;
+    grid-template-columns: 20% 75%;
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+    margin: 0px;
+}
+  
+.inputwindow{
+    margin-top: 0;
+    display: block !important;
+    grid-template-rows: auto !important;
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100%;
+    color: #fff;
+}
+
+.menuButton{
+    background-color: #666 !important;
+    color: #fff !important;
+}
+.menuButton:hover{
+    background-color: #555;
+}
+.menuSelected{
+    background-color : #888 !important;
+    color: #fff !important;
+}
+.modeWindow{
+    grid-column: 2;
+    grid-template-rows: 50px auto;
+}
+
+.menu{
+    grid-row: 1;
+    grid-column: 1;
+}
+  
+.predictMode{
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.inputRow{
+    display: inline-flex !important;
+    max-width: 450px !important;
+    min-width: 450px !important;
+    margin-top: 20px !important;
+    margin-right: 10px !important;
+}
+
+.font{
+    font-size: 1em;
+}
+.adornment{
+    width: 100px;
+}
+
+.csvReader {
+    margin: 20px;
+    display: 'flex';
+    margin-bottom: 10;
+} 
+.browseFile {
+    width: '20%';
+}
+.acceptedFile {
+    border: 0.5px solid lightblue;
+    height: 45;
+    line-height: 2.5em;
+    padding-left: 10;
+    width: '80%';
+}
+.upload{
+    padding: 0 20px;
+} 
+.progressBarBackgroundColor {
+    background-color: #edf4fb;
+} 
+
+.input{
+    display: inline-flex !important;
+    max-width: 450px;
+    min-width: 450px !important;
+    margin-top: 25px !important;
+    margin-right: 10px !important;
+}
+
+.sendFileButton{
+    display: inline-block !important;
+    border: none !important;
+    width: 120px;
+    height: 55px;
+    font-size: 0.8em !important;
+    background-color: #555555 !important;
+    margin-top: 25px !important;
+    padding: 10px !important;
+    margin-right: 20px !important;
+    color: #FFF !important;
+    border-radius: 5px !important;
+}
+.sendFileButton:disabled{
+    display: inline-block !important;
+    border: none;
+    width: 120px;
+    height: 55px;
+    font-size: 0.8em !important;
+    background-color: #AAA !important;
+    margin-top: 25px I !important;
+    padding: 10px I !important;
+    margin-right: 20px !important;
+    color: #CCC !important;
+    border-radius: 5px !important;
+}
+.sendFileButton:hover{
+    display: inline-block !important;
+    border: none;
+    width: 120px;
+    height: 55px;
+    font-size: 0.8em !important;
+    background-color: #444444 !important;
+    margin-top: 25px !important;
+    margin-right: 20px !important;
+    color: #FFF !important;
+}

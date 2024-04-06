@@ -1,0 +1,35 @@
+version: '1.0'
+
+networks:
+  network:
+    driver: bridge
+
+services:
+  server:
+    container_name: server
+    build: 
+      context: ../web-api
+      dockerfile: ../web-api/Dockerfile
+    expose:
+      - 5001
+    ports:
+      - "5001:5001"
+    networks:
+      - network
+
+  client:
+    container_name: client
+    build: 
+      context: ../front-end
+      dockerfile: ../front-end/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    environment:
+      REQUEST_URL: http://127.0.0.1:5001/predict
+    env_file:
+      - ../front-end/.env
+    networks:
+      - network
+    
