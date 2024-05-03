@@ -3,6 +3,10 @@ ExchangeRates.csv
 hh_database.csv
 venv/
 logs/
+flags_activity.csv
+profit_table.csv
+fashion-mnist_test.csv
+fashion-mnist_train.csv
 =======
 hh_database.csv
 >>>>>>> e166f29 (change gitignore)
