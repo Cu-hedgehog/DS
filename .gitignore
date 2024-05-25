@@ -7,6 +7,9 @@ flags_activity.csv
 profit_table.csv
 fashion-mnist_test.csv
 fashion-mnist_train.csv
+images_sub.npy
+images.npy
+labels.npy
 =======
 hh_database.csv
 >>>>>>> e166f29 (change gitignore)
