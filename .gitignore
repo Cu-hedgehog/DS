@@ -3,6 +3,7 @@ ExchangeRates.csv
 hh_database.csv
 venv/
 logs/
+fashion_mnist
 flags_activity.csv
 profit_table.csv
 fashion-mnist_test.csv
