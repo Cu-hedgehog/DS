@@ -2,7 +2,7 @@
 
 `docker build -t test-nginx-image nginx\`
 
-`docker run --name test-nginx-cnt -p 8080:80 -d test-nginx-image`
+`docker run --name test-nginx-cnt -i -p 8080:80 -d test-nginx-image`
 
 Создание и запуск образа postgresql:
 
